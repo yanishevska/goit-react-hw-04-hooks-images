@@ -1,4 +1,4 @@
-import { Component } from "react";
+import {useState } from "react";
 import "./App.css";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,50 +6,40 @@ import ImageGallery from './components/ImageGallery';
 import Searchbar from "./components/Searchbar";
 import Modal from "./components/Modal";
 
-class App extends Component {
-  state = {
-    queryName: '',
-    page: 1,
-    images: [],
-    showModal: false,
-    largeImg: "",
-  }
+function App() {
+  const [queryName,setQueryName] = useState('');
+  const [showModal,setShowModal] = useState(false);
+  const [largeImg,setLargeImg] = useState('');
+  
     
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }))
+  const toggleModal = () => {
+   setShowModal (!showModal)
   }
 
-  handleFormSubmit = queryName => {
-    this.setState({
-      queryName,
-    });
+ const  handleFormSubmit = queryName => {
+    setQueryName(queryName)
   }
 
-  handleBigImg = (data) => {
-    this.setState({ largeImg: data });
-    this.toggleModal();
+  const handleBigImg = (data) => {
+    setLargeImg( data );
+  toggleModal();
   }
 
- 
-  render() {
-    const { showModal, queryName,largeImg } = this.state;
 
      return (
        <div>
-         <Searchbar onSubmit={this.handleFormSubmit} />
+         <Searchbar onSubmit={handleFormSubmit} />
         
-         <ImageGallery queryName={queryName}  handleBigImg={ this.handleBigImg} />
+         <ImageGallery queryName={queryName}  handleBigImg={handleBigImg} />
          
          {showModal &&
-           (<Modal toggleModal={this.toggleModal} largeImgURL={largeImg}/>)}
+           (<Modal toggleModal={toggleModal} largeImgURL={largeImg}/>)}
 
          <ToastContainer autoClose={2000} />
       </div>
     );
   }
-}
+
 
 export default App;
 
